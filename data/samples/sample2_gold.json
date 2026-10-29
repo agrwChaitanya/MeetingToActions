@@ -1,0 +1,18 @@
+{
+  "actions": [
+    {
+      "id": "a1",
+      "task": "Fix the authentication vulnerability",
+      "owner": "Dave",
+      "due_date": "2026-04-01",
+      "source_quote": "Dave: Security audit is underway. I need to fix the authentication vulnerability by 2026-04-01."
+    },
+    {
+      "id": "a2",
+      "task": "Work on billing dashboard integration",
+      "owner": "Eve",
+      "due_date": "2026-04-05",
+      "source_quote": "Eve: I am working on the billing dashboard integration. That will be ready by 2026-04-05."
+    }
+  ]
+}

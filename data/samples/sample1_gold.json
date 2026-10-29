@@ -1,0 +1,25 @@
+{
+  "actions": [
+    {
+      "id": "a1",
+      "task": "Take charge of backend API migration",
+      "owner": "Bob",
+      "due_date": "2026-03-15",
+      "source_quote": "Bob: I can take charge of backend API migration. I will have that done by 2026-03-15."
+    },
+    {
+      "id": "a2",
+      "task": "Handle frontend redesign and user testing",
+      "owner": "Charlie",
+      "due_date": "2026-03-20",
+      "source_quote": "Charlie: Sounds good. I will handle the frontend redesign and user testing. I'll finish by 2026-03-20."
+    },
+    {
+      "id": "a3",
+      "task": "Coordinate documentation and release notes",
+      "owner": "Alice",
+      "due_date": "2026-03-25",
+      "source_quote": "Alice: Excellent. I will coordinate the documentation and release notes, targeting 2026-03-25."
+    }
+  ]
+}

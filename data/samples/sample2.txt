@@ -1,0 +1,4 @@
+Manager: Let's review our sprint progress. Dave, what's the status on security audit?
+Dave: Security audit is underway. I need to fix the authentication vulnerability by 2026-04-01.
+Eve: I am working on the billing dashboard integration. That will be ready by 2026-04-05.
+Manager: Great work. Please make sure unit tests are updated as well.

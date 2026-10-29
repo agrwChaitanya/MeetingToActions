@@ -1,0 +1,18 @@
+{
+  "actions": [
+    {
+      "id": "a1",
+      "task": "Gather all compliance policies and update the employee handbook",
+      "owner": "Grace",
+      "due_date": "2026-05-10",
+      "source_quote": "Grace: I will gather all compliance policies and update the employee handbook by 2026-05-10."
+    },
+    {
+      "id": "a2",
+      "task": "Review vendor security assessments and contracts",
+      "owner": "Hank",
+      "due_date": "2026-05-15",
+      "source_quote": "Hank: I will review vendor security assessments and contracts by 2026-05-15."
+    }
+  ]
+}
