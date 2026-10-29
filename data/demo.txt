@@ -1,0 +1,51 @@
+Meeting: Product Launch Readiness Review
+Date: Tuesday, October 27, 2026
+Attendees: Priya (Product), Marcus (Engineering), Dana (Marketing), Leo (Support)
+
+Priya: Thanks everyone. We're about three weeks from the Atlas 2.0 launch, so let's go through what's still open. First, the pricing page. Marcus, can you finish the new tier comparison table?
+
+Marcus: Yes, I can have the table done by Friday, October 30.
+
+Priya: Great. Second, the onboarding email sequence. Dana, that's yours, right?
+
+Dana: It is. The drafts are mostly written, but I still need legal to approve the refund wording. I'll push for that this week.
+
+Priya: Okay. We need that before launch. Can you have the final version to the team by November 6?
+
+Dana: Sure, November 6 works.
+
+Priya: Third, the support documentation. We have 40 articles to update for the new dashboard. Leo, you mentioned earlier you could take that.
+
+Leo: I can help with the first batch, maybe the setup guides. I don't think I can take the whole set.
+
+Priya: Let's say the setup guides are yours by next Friday. Then we'll decide who takes the rest.
+
+Leo: Next Friday, so November 6?
+
+Priya: Yes. Actually, wait, next Friday from today would be November 6, yes.
+
+Marcus: We also have a performance issue. The dashboard loads slowly with more than 500 projects. Someone needs to investigate. I can't do it this sprint.
+
+Priya: Right. That's a blocker, so it needs an owner. Anyone?
+
+Dana: Maybe someone from the platform team? I don't know who's free.
+
+Priya: Let's leave it open for now and sort it out after the meeting. It's important, so please don't let it slip.
+
+Marcus: Agreed. Also, the beta customers want a call before launch. Priya, I think that's you?
+
+Priya: I'll set up the beta customer call soon. Maybe the week of November 9, if the calendar works.
+
+Dana: Let's also send a launch announcement to the press list. I think we should do that the day before launch, but we need the press kit first.
+
+Priya: Good point. Who owns the press kit?
+
+Dana: I thought you did, Priya.
+
+Priya: I did say I'd look at it. Let's say I'll have a first draft to you by end of next week, so November 13.
+
+Leo: One more thing. Are we still planning to retire the old API version on launch day?
+
+Marcus: That was the plan, but I'd like to wait until the performance fix is in. We can decide that once we know more.
+
+Priya: Agreed. Let's keep the old API running until we decide. Thanks, everyone. Quick recap: Marcus, pricing table by October 30. Dana, onboarding emails and legal approval by November 6. Leo, setup guides by November 6. Priya, beta call the week of November 9 and press kit draft by November 13. The dashboard performance investigation still needs an owner.
