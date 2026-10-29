@@ -1,5 +1,9 @@
-Draft professional follow-up emails for each owner based on their approved action items.
-Each email should be addressed to the recipient (owner), have a clear subject, a professional body outlining their tasks, and list the task IDs assigned to them.
+Draft a professional, personalized follow-up email for the recipient ({recipient}) based strictly on their assigned approved action items.
+
+Requirements:
+1. **Subject:** Create a clear, compelling subject line that reflects the meeting follow-up and specific action items (e.g. "Action Items & Follow-up: [Key Topic / Deliverables]").
+2. **Body:** Write a professional, polite email body. Greet the recipient, summarize the context briefly, list each of their assigned action items with task descriptions, due dates (if any), and source quotes/notes, and close professionally.
+3. **Task IDs:** The task_ids list should include the IDs of the action items assigned to this recipient.
 
 Approved Action Items:
 {approved_actions}

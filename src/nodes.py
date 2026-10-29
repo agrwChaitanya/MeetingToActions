@@ -198,10 +198,11 @@ def finalize(state: Dict[str, Any], llm=None) -> Dict[str, Any]:
             drafts.append(draft)
         except Exception as e:
             logger.error(f"Error generating email draft for {owner}: {e}")
+            task_details = "\n".join([f"- {i.task} (Due: {i.due_date or 'TBD'})" for i in items])
             drafts.append(EmailDraft(
                 recipient=owner,
-                subject=f"Action Items from Meeting",
-                body=f"Hello {owner},\n\nPlease review your tasks:\n" + "\n".join([f"- {i.task}" for i in items]),
+                subject=f"Action Items & Follow-up for {owner} ({len(items)} task{'s' if len(items) > 1 else ''})",
+                body=f"Hello {owner},\n\nHere are your assigned action items from our recent meeting:\n\n{task_details}\n\nPlease let us know if you have any questions.\n\nBest regards,\nMeeting Facilitator",
                 task_ids=[item.id for item in items]
             ))
             

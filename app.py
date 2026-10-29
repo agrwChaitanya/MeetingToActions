@@ -160,7 +160,7 @@ if snapshot:
         st.subheader("📧 Email Drafts")
         drafts = values.get("drafts", [])
         if drafts:
-            for draft in drafts:
+            for idx, draft in enumerate(drafts):
                 recipient = draft.recipient if hasattr(draft, "recipient") else draft.get("recipient", "Unknown")
                 subject = draft.subject if hasattr(draft, "subject") else draft.get("subject", "")
                 body = draft.body if hasattr(draft, "subject") else draft.get("body", "")
@@ -168,7 +168,20 @@ if snapshot:
                 
                 with st.expander(f"Draft to: {recipient} (Tasks: {', '.join(task_ids)})"):
                     st.markdown(f"**Subject:** {subject}")
-                    st.text_area("Body", value=body, height=150, key=f"draft_{recipient}")
+                    st.text_area("Body", value=body, height=150, key=f"draft_body_{recipient}_{idx}")
+                    
+                    sent_key = f"email_sent_{recipient}_{idx}"
+                    if sent_key not in st.session_state:
+                        st.session_state[sent_key] = False
+                        
+                    col_send, col_status = st.columns([1, 3])
+                    with col_send:
+                        if st.button(f"📤 Send Email", key=f"send_btn_{recipient}_{idx}", disabled=st.session_state[sent_key]):
+                            st.session_state[sent_key] = True
+                            st.rerun()
+                    with col_status:
+                        if st.session_state[sent_key]:
+                            st.success(f"✓ Simulated email successfully sent to {recipient}!")
         else:
             st.info("No email drafts generated.")
             
@@ -178,6 +191,15 @@ if snapshot:
         if timeline:
             timeline_df = pd.DataFrame(timeline)
             st.dataframe(timeline_df, use_container_width=True)
+            
+            csv_data = timeline_df.to_csv(index=False).encode('utf-8')
+            st.download_button(
+                label="📥 Download Timeline (CSV)",
+                data=csv_data,
+                file_name="action_timeline.csv",
+                mime="text/csv",
+                use_container_width=True
+            )
         else:
             st.info("No timeline items.")
             
