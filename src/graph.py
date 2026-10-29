@@ -1,4 +1,5 @@
 from langgraph.graph import StateGraph, START, END
+from langgraph.checkpoint.memory import MemorySaver
 from src.state import MeetingState
 from src.nodes import (
     extract_summary,
@@ -50,4 +51,5 @@ def build_graph():
 
     return workflow
 
-graph = build_graph().compile()
+memory = MemorySaver()
+graph = build_graph().compile(checkpointer=memory)
