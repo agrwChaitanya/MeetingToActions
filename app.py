@@ -1,6 +1,7 @@
 import streamlit as st
 import uuid
 import pandas as pd
+from pathlib import Path
 from langgraph.types import Command
 from src.graph import graph
 from src.schemas import ActionItem
@@ -32,6 +33,30 @@ with st.sidebar:
         st.session_state.running = False
         st.rerun()
     
+    st.markdown("---")
+    st.subheader("📂 Sample Transcripts")
+    st.markdown("Click to load a sample transcript:")
+    
+    def load_sample_transcript(sample_name: str) -> str:
+        sample_path = Path("data/samples") / f"{sample_name}.txt"
+        if sample_path.exists():
+            return sample_path.read_text(encoding="utf-8")
+        return ""
+
+    col_s1, col_s2, col_s3 = st.columns(3)
+    with col_s1:
+        if st.button("Sample 1"):
+            st.session_state.transcript = load_sample_transcript("sample1")
+            st.rerun()
+    with col_s2:
+        if st.button("Sample 2"):
+            st.session_state.transcript = load_sample_transcript("sample2")
+            st.rerun()
+    with col_s3:
+        if st.button("Sample 3"):
+            st.session_state.transcript = load_sample_transcript("sample3")
+            st.rerun()
+
     st.markdown("---")
     st.markdown("**About**")
     st.markdown("This app runs an end-to-end LangGraph workflow to extract, critique, revise, and finalize meeting action items.")
