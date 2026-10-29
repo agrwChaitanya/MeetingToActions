@@ -22,11 +22,16 @@ def extract_summary(state: Dict[str, Any], llm=None) -> Dict[str, Any]:
     prompt_template = load_prompt("summarize.txt")
     prompt = prompt_template.format(transcript=state.get("transcript", ""))
     
-    structured_llm = llm.with_structured_output(SummaryOutput)
-    result = structured_llm.invoke(prompt)
+    try:
+        structured_llm = llm.with_structured_output(SummaryOutput)
+        result = structured_llm.invoke(prompt)
+        summary = result.summary
+    except Exception as e:
+        logger.error(f"Error parsing SummaryOutput: {e}. Falling back to transcript excerpt.")
+        summary = state.get("transcript", "")[:500]
     
     return {
-        "summary": result.summary,
+        "summary": summary,
         "trace": ["extract_summary"]
     }
 
@@ -37,11 +42,16 @@ def extract_actions(state: Dict[str, Any], llm=None) -> Dict[str, Any]:
     prompt_template = load_prompt("extract_actions.txt")
     prompt = prompt_template.format(transcript=state.get("transcript", ""))
     
-    structured_llm = llm.with_structured_output(ActionList)
-    result = structured_llm.invoke(prompt)
+    try:
+        structured_llm = llm.with_structured_output(ActionList)
+        result = structured_llm.invoke(prompt)
+        raw_actions = result.actions
+    except Exception as e:
+        logger.error(f"Error parsing ActionList: {e}. Falling back to empty actions list.")
+        raw_actions = []
     
     actions = []
-    for idx, item in enumerate(result.actions, start=1):
+    for idx, item in enumerate(raw_actions, start=1):
         item_dict = item.model_dump()
         if not item_dict.get("id"):
             item_dict["id"] = f"a{idx}"
@@ -63,11 +73,16 @@ def critic(state: Dict[str, Any], llm=None) -> Dict[str, Any]:
         actions=str([a.model_dump() for a in state.get("actions", [])])
     )
     
-    structured_llm = llm.with_structured_output(CriticOutput)
-    result = structured_llm.invoke(prompt)
+    try:
+        structured_llm = llm.with_structured_output(CriticOutput)
+        result = structured_llm.invoke(prompt)
+        issues = result.issues
+    except Exception as e:
+        logger.error(f"Error parsing CriticOutput: {e}. Falling back to zero issues.")
+        issues = []
     
     return {
-        "issues": result.issues,
+        "issues": issues,
         "trace": ["critic"]
     }
 
@@ -83,13 +98,48 @@ def revise(state: Dict[str, Any], llm=None) -> Dict[str, Any]:
         issues=str(state.get("issues", []))
     )
     
-    structured_llm = llm.with_structured_output(ReviseOutput)
-    result = structured_llm.invoke(prompt)
+    try:
+        structured_llm = llm.with_structured_output(ReviseOutput)
+        result = structured_llm.invoke(prompt)
+        
+        existing_actions = state.get("actions", [])
+        existing_map = {a.id: a for a in existing_actions if a.id}
+        
+        actions = []
+        for idx, item in enumerate(result.actions, start=1):
+            item_dict = item.model_dump()
+            action_id = item_dict.get("id")
+            if not action_id:
+                if idx <= len(existing_actions):
+                    action_id = existing_actions[idx - 1].id
+                else:
+                    action_id = f"a{idx}"
+            item_dict["id"] = action_id
+
+            if not item_dict.get("source_quote"):
+                if action_id in existing_map:
+                    item_dict["source_quote"] = existing_map[action_id].source_quote
+                else:
+                    item_dict["source_quote"] = ""
+
+            if not item_dict.get("task"):
+                if action_id in existing_map:
+                    item_dict["task"] = existing_map[action_id].task
+                else:
+                    item_dict["task"] = "Task"
+
+            actions.append(ActionItem(**item_dict))
+        
+        summary = result.summary if result.summary else state.get("summary", "")
+    except Exception as e:
+        logger.error(f"Error parsing ReviseOutput: {e}. Falling back to existing actions and summary.")
+        summary = state.get("summary", "")
+        actions = state.get("actions", [])
     
     loops = state.get("loops", 0) + 1
     return {
-        "summary": result.summary,
-        "actions": result.actions,
+        "summary": summary,
+        "actions": actions,
         "issues": [],
         "loops": loops,
         "trace": ["revise"]

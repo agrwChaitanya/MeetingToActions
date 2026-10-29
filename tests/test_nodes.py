@@ -83,6 +83,50 @@ def test_revise_node():
     assert result["issues"] == []
     assert "revise" in result["trace"]
 
+def test_revise_node_missing_fields():
+    mock_llm = MagicMock()
+    mock_structured = MagicMock()
+    
+    partial_action = ActionItem(id="", task="Partial task", owner="Alice", due_date=None, source_quote="")
+    mock_structured.invoke.return_value = ReviseOutput(
+        summary="Summary without ids",
+        actions=[partial_action]
+    )
+    mock_llm.with_structured_output.return_value = mock_structured
+
+    state = {
+        "transcript": "Transcript",
+        "summary": "Summary",
+        "actions": [ActionItem(id="a1", task="Task", owner=None, due_date=None, source_quote="Original quote")],
+        "issues": ["Missing owner"],
+        "loops": 0
+    }
+    result = revise(state, llm=mock_llm)
+    assert result["actions"][0].id == "a1"
+    assert result["actions"][0].source_quote == "Original quote"
+
+def test_revise_node_parsing_exception_fallback():
+    mock_llm = MagicMock()
+    mock_structured = MagicMock()
+    mock_structured.invoke.side_effect = Exception("Failed to parse ReviseOutput from completion")
+    mock_llm.with_structured_output.return_value = mock_structured
+
+    existing_action = ActionItem(id="a1", task="Original task", owner=None, due_date=None, source_quote="quote")
+    state = {
+        "transcript": "Transcript",
+        "summary": "Original summary",
+        "actions": [existing_action],
+        "issues": ["Missing owner"],
+        "loops": 0
+    }
+    result = revise(state, llm=mock_llm)
+
+    assert result["summary"] == "Original summary"
+    assert result["actions"] == [existing_action]
+    assert result["issues"] == []
+    assert result["loops"] == 1
+    assert "revise" in result["trace"]
+
 def test_human_review_node():
     with patch("src.nodes.interrupt") as mock_interrupt:
         mock_interrupt.return_value = [

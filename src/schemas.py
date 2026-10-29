@@ -3,11 +3,11 @@ from typing import List, Optional
 from pydantic import BaseModel, Field, field_validator
 
 class ActionItem(BaseModel):
-    id: str
-    task: str
+    id: str = ""
+    task: str = ""
     owner: Optional[str] = None
     due_date: Optional[str] = None
-    source_quote: str
+    source_quote: str = ""
     notes: str = ""
 
     @field_validator("due_date")
@@ -28,14 +28,14 @@ class EmailDraft(BaseModel):
     task_ids: List[str]
 
 class SummaryOutput(BaseModel):
-    summary: str
+    summary: str = ""
 
 class ActionList(BaseModel):
-    actions: List[ActionItem]
+    actions: List[ActionItem] = Field(default_factory=list)
 
 class CriticOutput(BaseModel):
-    issues: List[str]
+    issues: List[str] = Field(default_factory=list)
 
 class ReviseOutput(BaseModel):
-    summary: str
-    actions: List[ActionItem]
+    summary: str = ""
+    actions: List[ActionItem] = Field(default_factory=list)
