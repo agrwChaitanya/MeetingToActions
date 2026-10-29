@@ -1,0 +1,4 @@
+Summarize the following meeting transcript concisely, capturing key discussion points and decisions.
+
+Transcript:
+{transcript}

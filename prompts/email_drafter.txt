@@ -1,0 +1,5 @@
+Draft professional follow-up emails for each owner based on their approved action items.
+Each email should be addressed to the recipient (owner), have a clear subject, a professional body outlining their tasks, and list the task IDs assigned to them.
+
+Approved Action Items:
+{approved_actions}

@@ -1,0 +1,8 @@
+Extract all action items from the following meeting transcript.
+Assign IDs starting from a1 (a1, a2, etc.).
+Set owner to null if not clearly stated in the transcript. Do NOT invent owners or dates.
+Parse due dates in YYYY-MM-DD format if explicitly stated, otherwise null.
+Include the exact source quote and any notes.
+
+Transcript:
+{transcript}

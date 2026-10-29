@@ -1,0 +1,16 @@
+Revise the action items and summary based on the identified issues and the original transcript.
+Keep action item IDs stable. Fix issues referencing only the transcript.
+If an item cannot be resolved, leave owner as null and add a note explaining why.
+Clear resolved issues and update summary/actions.
+
+Transcript:
+{transcript}
+
+Current Summary:
+{summary}
+
+Current Action Items:
+{actions}
+
+Issues to Fix:
+{issues}

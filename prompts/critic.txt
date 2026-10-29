@@ -1,0 +1,15 @@
+Review the meeting summary and extracted action items against the original transcript.
+Flag any issues such as:
+- Missing owners for action items that have clear owners in the transcript
+- Missing due dates that were stated in the transcript
+- Unknown owners not mentioned in the transcript
+- Contradictions between summary/actions and transcript
+
+Transcript:
+{transcript}
+
+Summary:
+{summary}
+
+Action Items:
+{actions}
