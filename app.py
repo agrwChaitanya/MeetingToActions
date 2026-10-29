@@ -4,6 +4,7 @@ import pandas as pd
 from langgraph.types import Command
 from src.graph import graph
 from src.schemas import ActionItem
+from src.config import MAX_TRANSCRIPT_CHARS
 
 st.set_page_config(
     page_title="Meeting Transcripts to Actions",
@@ -50,23 +51,26 @@ with col1:
 config = {"configurable": {"thread_id": st.session_state.thread_id}}
 
 if run_button and transcript_input.strip():
-    st.session_state.transcript = transcript_input
-    initial_state = {
-        "transcript": transcript_input,
-        "summary": "",
-        "actions": [],
-        "issues": [],
-        "loops": 0,
-        "trace": [],
-        "approved": [],
-        "drafts": [],
-        "timeline": []
-    }
-    with st.spinner("Processing meeting transcript... (Extracting summary & actions, running critic & revision)"):
-        try:
-            graph.invoke(initial_state, config)
-        except Exception as e:
-            st.error(f"Error during graph execution: {e}")
+    if len(transcript_input) > MAX_TRANSCRIPT_CHARS:
+        st.error(f"Transcript exceeds maximum length of {MAX_TRANSCRIPT_CHARS} characters (current length: {len(transcript_input)}).")
+    else:
+        st.session_state.transcript = transcript_input
+        initial_state = {
+            "transcript": transcript_input,
+            "summary": "",
+            "actions": [],
+            "issues": [],
+            "loops": 0,
+            "trace": [],
+            "approved": [],
+            "drafts": [],
+            "timeline": []
+        }
+        with st.spinner("Processing meeting transcript... (Extracting summary & actions, running critic & revision)"):
+            try:
+                graph.invoke(initial_state, config)
+            except Exception as e:
+                st.error(f"Error during graph execution: {e}")
 
 # Check current graph state
 try:
