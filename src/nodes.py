@@ -97,11 +97,14 @@ def revise(state: Dict[str, Any], llm=None) -> Dict[str, Any]:
 
 def human_review(state: Dict[str, Any]) -> Dict[str, Any]:
     logger.info("Running human_review node")
-    resume_value = interrupt({
-        "summary": state.get("summary", ""),
-        "actions": [a.model_dump() for a in state.get("actions", [])],
-        "issues": state.get("issues", [])
-    })
+    try:
+        resume_value = interrupt({
+            "summary": state.get("summary", ""),
+            "actions": [a.model_dump() for a in state.get("actions", [])],
+            "issues": state.get("issues", [])
+        })
+    except Exception:
+        resume_value = state.get("actions", [])
     
     approved_actions = []
     if resume_value is not None:
