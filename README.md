@@ -35,18 +35,24 @@ The core engine is built using **LangGraph**, ensuring state immutability, check
 
 ```mermaid
 graph TD
-    START --> ExtractSummary[extract_summary]
-    START --> ExtractActions[extract_actions]
-    ExtractSummary --> Critic[critic]
-    ExtractActions --> Critic
+    classDef process fill:#e1f5fe,stroke:#01579b,stroke-width:2px,color:#01579b,font-weight:bold;
+    classDef ai fill:#fff3e0,stroke:#e65100,stroke-width:2px,color:#e65100,font-weight:bold;
+    classDef human fill:#f3e5f5,stroke:#4a148c,stroke-width:2px,color:#4a148c,font-weight:bold;
+    classDef finish fill:#e8f5e9,stroke:#1b5e20,stroke-width:2px,color:#1b5e20,font-weight:bold;
+
+    START([Start]) --> S_Sum["extract_summary"]:::process
+    START --> S_Act["extract_actions"]:::process
     
-    Critic -->|Issues Found & Loops < 2| Revise[revise]
+    S_Sum --> Critic["critic"]:::ai
+    S_Act --> Critic
+    
+    Critic -->|Issues Found & Loops < 2| Revise["revise"]:::ai
     Revise --> Critic
     
-    Critic -->|No Issues OR Max Loops Reached| HumanReview{human_review<br><i>(Interrupt)</i>}
+    Critic -->|No Issues OR Max Loops| Review{{"human_review<br>(Interrupt)"}}:::human
     
-    HumanReview --> Finalize[finalize]
-    Finalize --> END[END]
+    Review -->|Approved / Edited| Finalize["finalize"]:::finish
+    Finalize --> END([End]):::finish
 ```
 
 ### Key Graph Nodes:
